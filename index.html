@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AegisBot - Advanced WhatsApp Bot Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fab fa-whatsapp"></i>
+                <span>AegisBot</span>
+                <div class="status-badge" id="navStatus">
+                    <div class="status-dot offline"></div>
+                    <span>Offline</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#dashboard" class="nav-link active">Dashboard</a>
+                <a href="#commands" class="nav-link">Befehle</a>
+                <a href="#stats" class="nav-link">Statistiken</a>
+                <a href="#system" class="nav-link">System</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="dashboard" class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">
+                            <span class="gradient-text">AegisBot</span>
+                            <span class="version-tag">v2.0</span>
+                        </h1>
+                        <p class="hero-subtitle">Fortschrittlicher WhatsApp Bot mit Economy, Pets, Moderation & mehr</p>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number" id="heroUsers">0</div>
+                                <div class="stat-label">Aktive Nutzer</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="heroGroups">0</div>
+                                <div class="stat-label">Gruppen</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="heroPets">0</div>
+                                <div class="stat-label">Haustiere</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="bot-avatar">
+                            <i class="fas fa-robot"></i>
+                            <div class="pulse-ring"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <a href="https://wa.me/16362289238?text=/join%20" class="action-btn primary" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Zur Gruppe hinzufügen</span>
+                    </a>
+                    <button class="action-btn secondary" onclick="refreshData()">
+                        <i class="fas fa-sync-alt" id="refreshIcon"></i>
+                        <span>Daten aktualisieren</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Cards -->
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="dashboard-grid">
+                    <!-- Bot Status Card -->
+                    <div class="dashboard-card status-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-heartbeat"></i> Bot Status</h3>
+                            <div class="status-indicator" id="cardStatus">
+                                <div class="status-dot offline"></div>
+                                <span>Offline</span>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="status-grid">
+                                <div class="status-item">
+                                    <div class="status-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <span class="status-label">Laufzeit</span>
+                                        <span class="status-value" id="uptime">--</span>
+                                    </div>
+                                </div>
+                                <div class="status-item">
+                                    <div class="status-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <span class="status-label">Registriert</span>
+                                        <span class="status-value" id="registeredUsers">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Stats Card -->
+                    <div class="dashboard-card system-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-server"></i> System-Ressourcen</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="resource-item">
+                                <div class="resource-header">
+                                    <span class="resource-label">RAM-Verbrauch</span>
+                                    <span class="resource-value" id="ramUsage">-- GB</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="ramProgress"></div>
+                                </div>
+                            </div>
+                            <div class="system-info">
+                                <div class="info-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <span id="cpuInfo">Lädt...</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-hdd"></i>
+                                    <span id="platformInfo">Lädt...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Card -->
+                    <div class="dashboard-card activity-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Aktivität</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="activity-stats">
+                                <div class="activity-item">
+                                    <div class="activity-number" id="totalUsers">0</div>
+                                    <div class="activity-label">Gesamt Nutzer</div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-number" id="totalGroups">0</div>
+                                    <div class="activity-label">Aktive Gruppen</div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-number" id="totalPets">0</div>
+                                    <div class="activity-label">Virtuelle Haustiere</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commands Section -->
+        <section id="commands" class="commands-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Verfügbare Befehle</h2>
+                    <p class="section-subtitle">Vollständige Liste aller Bot-Befehle nach Kategorien sortiert</p>
+                </div>
+                <div class="commands-grid" id="commandsGrid">
+                    <!-- Commands will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="stats" class="stats-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Bot-Statistiken</h2>
+                    <p class="section-subtitle">Echtzeit-Performance und Nutzungsmetriken</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="statUsers">0</div>
+                            <div class="stat-label">Aktive Nutzer</div>
+                            <div class="stat-change positive">+12% diese Woche</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="statGroups">0</div>
+                            <div class="stat-label">Gruppen</div>
+                            <div class="stat-change positive">+5% diese Woche</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="statPets">0</div>
+                            <div class="stat-label">Virtuelle Haustiere</div>
+                            <div class="stat-change positive">+25% diese Woche</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="statRegistered">0</div>
+                            <div class="stat-label">Registriert</div>
+                            <div class="stat-change positive">+8% diese Woche</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Section -->
+        <section id="system" class="system-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">System-Informationen</h2>
+                    <p class="section-subtitle">Server-Performance und technische Details</p>
+                </div>
+                <div class="system-grid">
+                    <div class="system-card">
+                        <div class="system-header">
+                            <h3><i class="fas fa-memory"></i> Speicher-Verbrauch</h3>
+                        </div>
+                        <div class="system-content">
+                            <div class="memory-visual">
+                                <div class="memory-bar">
+                                    <div class="memory-used" id="memoryBar"></div>
+                                </div>
+                                <div class="memory-stats">
+                                    <span id="memoryUsed">0 GB</span> / <span id="memoryTotal">0 GB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="system-card">
+                        <div class="system-header">
+                            <h3><i class="fas fa-microchip"></i> CPU-Informationen</h3>
+                        </div>
+                        <div class="system-content">
+                            <div class="cpu-info">
+                                <div class="cpu-item">
+                                    <span class="cpu-label">Modell:</span>
+                                    <span class="cpu-value" id="cpuModel">Lädt...</span>
+                                </div>
+                                <div class="cpu-item">
+                                    <span class="cpu-label">Kerne:</span>
+                                    <span class="cpu-value" id="cpuCores">0</span>
+                                </div>
+                                <div class="cpu-item">
+                                    <span class="cpu-label">Architektur:</span>
+                                    <span class="cpu-value" id="cpuArch">Lädt...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>AegisBot Dashboard</span>
+                </div>
+                <div class="footer-info">
+                    <span>Zuletzt aktualisiert: <span id="lastUpdate">--</span></span>
+                    <span>•</span>
+                    <span>Auto-Aktualisierung: 30s</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
